@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/v1/users/charts", produces = "application/json")
 public class ChartController {
 
-    @Autowired
-    private UserService userService;
+    @Autowired private UserService userService;
 
     @GetMapping
     @CachePut(value = "userChartCacheOne")

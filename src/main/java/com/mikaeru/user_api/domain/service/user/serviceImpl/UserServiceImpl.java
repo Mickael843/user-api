@@ -1,7 +1,7 @@
 package com.mikaeru.user_api.domain.service.user.serviceImpl;
 
 import com.mikaeru.user_api.domain.model.user.User;
-import com.mikaeru.user_api.domain.service.phone.CrudPhoneService;
+import com.mikaeru.user_api.domain.service.phone.PhoneService;
 import com.mikaeru.user_api.domain.service.user.UserService;
 import com.mikaeru.user_api.dto.user.out.UserChart;
 import com.mikaeru.user_api.repository.PhoneRepository;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired private UserRepository userRepository;
 
-    @Autowired private CrudPhoneService phoneService;
+    @Autowired private PhoneService phoneService;
 
     @Autowired private BCryptPasswordEncoder encoder;
 
