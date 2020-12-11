@@ -62,21 +62,11 @@ public class User implements UserDetails {
                     foreignKey = @ForeignKey(name = "fk_user", value = ConstraintMode.CONSTRAINT)),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "role_entity",
                     updatable = false, foreignKey = @ForeignKey(name = "fk_role", value = ConstraintMode.CONSTRAINT)) )
-    private List<Role> authorities;
+    private List<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
+        return roles;
     }
 
     @Override

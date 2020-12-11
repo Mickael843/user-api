@@ -7,16 +7,20 @@
       <w>arquivo</w>
       <w>assunto</w>
       <w>banco</w>
+      <w>branco</w>
       <w>bujgmat</w>
       <w>caminho</w>
+      <w>caracteres</w>
       <w>carregar</w>
       <w>conexão</w>
       <w>corretamente</w>
       <w>cors</w>
       <w>dados</w>
       <w>datasource</w>
+      <w>deve</w>
       <w>encontrado</w>
       <w>enviado</w>
+      <w>estar</w>
       <w>está</w>
       <w>exporta</w>
       <w>fazer</w>
@@ -24,13 +28,18 @@
       <w>gmail</w>
       <w>hwqocejj</w>
       <w>implementar</w>
+      <w>inválidos</w>
       <w>jdbc</w>
       <w>lubu</w>
       <w>mandando</w>
       <w>mickaelluiz</w>
       <w>mikaeru</w>
+      <w>máximo</w>
+      <w>mínimo</w>
+      <w>nulo</w>
       <w>obtendo</w>
       <w>pkey</w>
+      <w>pode</w>
       <w>postgre</w>
       <w>postgresql</w>
       <w>quem</w>
@@ -40,10 +49,13 @@
       <w>senha</w>
       <w>será</w>
       <w>smtp</w>
+      <w>somente</w>
       <w>starttls</w>
       <w>telefone</w>
       <w>tratar</w>
       <w>userapi</w>
+      <w>usários</w>
+      <w>válido</w>
     </words>
   </dictionary>
 </component>

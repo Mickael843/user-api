@@ -25,8 +25,6 @@ import java.util.Objects;
 @Service
 public class ReportServiceImpl implements ReportService {
 
-    private static final long serialVersionUID = 1L;
-
     @Autowired private JdbcTemplate jdbcTemplate;
 
     @Override

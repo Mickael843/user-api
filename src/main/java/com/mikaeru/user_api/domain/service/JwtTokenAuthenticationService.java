@@ -57,7 +57,7 @@ public class JwtTokenAuthenticationService {
                     return new UsernamePasswordAuthenticationToken(
                             userOptional.get().getUsername(),
                             userOptional.get().getPassword(),
-                            userOptional.get().getAuthorities()
+                            userOptional.get().getRoles()
                     );
                 }
             }

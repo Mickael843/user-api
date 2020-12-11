@@ -6,9 +6,11 @@ import com.mikaeru.user_api.domain.service.phone.PhoneService;
 import com.mikaeru.user_api.repository.PhoneRepository;
 import com.mikaeru.user_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,8 +21,21 @@ public class PhoneServiceImpl implements PhoneService {
 
     @Autowired private PhoneRepository phoneRepository;
 
+    private static final String INVALID_FIELDS = "Campos inválidos!";
     private static final String USER_NOT_FOUND = "Usuário não encontrado!";
     private static final String PHONE_NOT_FOUND = "Telefone não encontrado!";
+
+    @Override
+    public List<Phone> saveAll(List<Phone> phones) {
+
+        try {
+            phones = phoneRepository.saveAll(phones);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(INVALID_FIELDS);
+        }
+
+        return phones;
+    }
 
     @Override
     public void delete(UUID userUUID, UUID phoneUUID) {
