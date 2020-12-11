@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,16 +18,8 @@ import java.util.UUID;
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("select u from User u where u.name like %?1%")
-    List<User> findByName(String name);
+    Optional<User> findByExternalId(UUID externalId);
 
-    @Query("select u from User u where u.uuid = ?1")
-    Optional<User> findByUUID(UUID uuid);
-
-    @Query("select u from User u where u.uuid = ?1")
-    Optional<User> findByUUID(String uuid);
-
-    @Query("select u from User u where u.username = ?1")
     Optional<User> findByUsername(String username);
 
     @Modifying
@@ -48,7 +39,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     default Page<User> findByUsernamePage(String name, PageRequest pageRequest) {
         User user = new User();
-        user.setName(name);
+        user.setFirstname(name);
 
         ExampleMatcher matcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
@@ -57,12 +48,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
         return findAll(example, pageRequest);
     }
-
-//    @Modifying
-//    @Query(value = "alter table user_entity_role drop constraint ?1", nativeQuery = true)
-//    void removeConstraintRole(String constraint);
-
-//    @Modifying
-//    @Query(value = "insert into user_entity_role (user_entity_id, role_id) values(?1, (select id from role where authority = 'ROLE_USER'))", nativeQuery = true)
-//    void insertDefaultAccessRole(Long id);
 }

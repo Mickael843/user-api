@@ -2,7 +2,7 @@ package com.mikaeru.user_api.domain.service.user;
 
 import com.mikaeru.user_api.domain.model.phone.Phone;
 import com.mikaeru.user_api.domain.model.user.User;
-import com.mikaeru.user_api.dto.response.user.UserChart;
+import com.mikaeru.user_api.dto.user.out.UserChart;
 
 import java.util.List;
 

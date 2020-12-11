@@ -1,7 +1,7 @@
 package com.mikaeru.user_api.controller.v1.user;
 
 import com.mikaeru.user_api.domain.service.user.UserService;
-import com.mikaeru.user_api.dto.response.user.UserChart;
+import com.mikaeru.user_api.dto.user.out.UserChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;

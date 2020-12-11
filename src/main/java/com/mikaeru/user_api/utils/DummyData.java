@@ -27,18 +27,18 @@ public class DummyData {
         User user = null;
         for (int i =1; i <= NUMBER_OF_INSERTS; i++) {
             user = new User();
-            user.setName("Insert" + i);
+            user.setFirstname("Insert" + i);
             user.setLastName("last" + i);
             user.setUsername("user" + i);
             user.setPassword(encoder.encode("123"));
-            user.setCreated(OffsetDateTime.now());
-            user.setEmail(user.getName() + "@gmail.com");
-            user.setUuid(UUID.randomUUID());
+            user.setCreatedAt(OffsetDateTime.now());
+            user.setEmail(user.getFirstname() + "@gmail.com");
+            user.setExternalId(UUID.randomUUID());
             users.add(user);
         }
 
         for (User userTmp : users) {
-            System.out.println(userService.saveUser(userTmp).getName());
+            System.out.println(userService.saveUser(userTmp).getFirstname());
         }
     }
 }

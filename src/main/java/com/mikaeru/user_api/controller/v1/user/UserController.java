@@ -3,9 +3,9 @@ package com.mikaeru.user_api.controller.v1.user;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.report.ReportService;
 import com.mikaeru.user_api.domain.service.user.UserService;
-import com.mikaeru.user_api.dto.request.user.ReportParam;
-import com.mikaeru.user_api.dto.request.user.UserInput;
-import com.mikaeru.user_api.dto.response.user.UserOutput;
+import com.mikaeru.user_api.dto.user.in.ReportParam;
+import com.mikaeru.user_api.dto.user.in.UserInput;
+import com.mikaeru.user_api.dto.user.out.UserOutput;
 import com.mikaeru.user_api.repository.UserRepository;
 import net.sf.jasperreports.engine.JRException;
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -25,7 +25,6 @@ import javax.validation.Valid;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -105,45 +104,23 @@ public class UserController {
 
     @GetMapping("/{uuid}")
     public ResponseEntity<UserOutput> getUser(@PathVariable UUID uuid) {
-        Optional<User> userOptional = userRepository.findByUUID(uuid);
-        return userOptional
-                .map(user -> ResponseEntity.ok(toModel(user)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
-
+        return null;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserOutput saveUser(@Valid @RequestBody UserInput input) {
-        return toModel(userService.saveUser(toEntity(input)));
+        return null;
     }
 
     @PutMapping("/{uuid}")
     public ResponseEntity<UserOutput> updateUser(@Valid @RequestBody UserInput input, @PathVariable UUID uuid) {
-        Optional<User> userOptional = userRepository.findByUUID(uuid);
-        return userOptional
-                .map(user -> {
-                    input.setUuid(uuid);
-                    input.setId(user.getId());
-                    input.setCreated(user.getCreated());
-                    return ResponseEntity.ok(toModel(userService.updateUser(toEntity(input), user.getPhones())));
-                }).orElseGet(() -> ResponseEntity.notFound().build());
+        return null;
     }
 
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID uuid) {
-        Optional<User> userOptional = userRepository.findByUUID(uuid);
-
-        if (userOptional.isPresent()) {
-            if (userOptional.get().getPhones() == null) {
-                userService.deleteUserById(userOptional.get().getId());
-            } else {
-                userService.deleteUserById(userOptional.get().getId(), userOptional.get());
-            }
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.notFound().build();
+        return null;
     }
 
     @CachePut(value = "reportCacheOne")

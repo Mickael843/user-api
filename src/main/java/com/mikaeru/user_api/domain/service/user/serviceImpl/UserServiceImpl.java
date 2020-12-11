@@ -5,7 +5,7 @@ import com.mikaeru.user_api.domain.model.phone.Phone;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.phone.CrudPhoneService;
 import com.mikaeru.user_api.domain.service.user.UserService;
-import com.mikaeru.user_api.dto.response.user.UserChart;
+import com.mikaeru.user_api.dto.user.out.UserChart;
 import com.mikaeru.user_api.repository.PhoneRepository;
 import com.mikaeru.user_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User saveUser(User user) {
         User userSaved = null;
-        user.setCreated(OffsetDateTime.now());
+        user.setCreatedAt(OffsetDateTime.now());
         user.setPassword(encoder.encode(user.getPassword()));
 
         try {
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         phones.addAll(phonesSaved);
         user.setPhones(phones);
 
-        user.setUpdated(OffsetDateTime.now());
+        user.setUpdatedAt(OffsetDateTime.now());
 
         if (user.getPassword() != null)
             user.setPassword(encoder.encode(user.getPassword()));

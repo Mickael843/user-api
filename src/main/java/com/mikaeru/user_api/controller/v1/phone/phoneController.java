@@ -25,7 +25,7 @@ public class phoneController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePhone(@PathVariable UUID uuid, @PathVariable Long id) {
-        Optional<User> userOptional = userRepository.findByUUID(uuid);
+        Optional<User> userOptional = userRepository.findByExternalId(uuid);
 
         if (userOptional.isPresent()) {
             phoneService.deletePhoneById(id);

@@ -1,6 +1,6 @@
 package com.mikaeru.user_api.domain.service.report;
 
-import com.mikaeru.user_api.dto.request.user.ReportParam;
+import com.mikaeru.user_api.dto.user.in.ReportParam;
 import net.sf.jasperreports.engine.JRException;
 
 import javax.servlet.ServletContext;

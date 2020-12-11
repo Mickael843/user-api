@@ -1,7 +1,7 @@
 package com.mikaeru.user_api.domain.service.report.reportImpl;
 
 import com.mikaeru.user_api.domain.service.report.ReportService;
-import com.mikaeru.user_api.dto.request.user.ReportParam;
+import com.mikaeru.user_api.dto.user.in.ReportParam;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;

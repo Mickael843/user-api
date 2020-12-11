@@ -1,19 +1,26 @@
 package com.mikaeru.user_api.domain.model.user;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mikaeru.user_api.domain.model.phone.Phone;
-import com.mikaeru.user_api.domain.model.user.profession.Profession;
 import com.mikaeru.user_api.domain.model.user.role.Role;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Getter
+@Setter
 @Entity
+@NoArgsConstructor
+@EqualsAndHashCode
+@AllArgsConstructor
 @Table(name = "user_entity")
 public class User implements UserDetails {
 
@@ -21,171 +28,43 @@ public class User implements UserDetails {
 
     @Id
     @JsonIgnore
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(name = "user_uuid", nullable = false, unique = true)
-    private UUID uuid;
+    @Column(nullable = false, unique = true)
+    private UUID externalId;
 
-    @Column(name = "name_user", nullable = false)
-    private String name;
+    @Column(nullable = false)
+    private String firstname;
 
     private String lastName;
 
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(name = "password_user", nullable = false)
+    @Column(name = "user_password", nullable = false)
     private String password;
 
     private String email;
 
-    @ManyToOne
-    private Profession profession;
+    private OffsetDateTime createdAt;
 
-    private BigDecimal salary;
-
-    private OffsetDateTime created;
-
-    private OffsetDateTime updated;
-
-    @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "dd/MM/yyyy")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, pattern = "dd/MM/yyyy")
-    private Date dateOfBirth;
+    private OffsetDateTime updatedAt;
 
     @OneToMany(mappedBy = "owner")
     private List<Phone> phones;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_entity_role", uniqueConstraints = @UniqueConstraint(columnNames = {"user_entity_id", "role_id"}, name = "unique_role_user_entity"),
-            joinColumns = @JoinColumn(name = "user_entity_id", referencedColumnName = "id", table = "user_entity",
-                    foreignKey = @ForeignKey(name = "user_entity_fk", value = ConstraintMode.CONSTRAINT)),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "role",
-                    updatable = false, foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
-    private List<Role> roles = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Profession getProfession() {
-        return profession;
-    }
-
-    public void setProfession(Profession profession) {
-        this.profession = profession;
-    }
-
-    public BigDecimal getSalary() {
-        return salary;
-    }
-
-    public void setSalary(BigDecimal salary) {
-        this.salary = salary;
-    }
-
-    public OffsetDateTime getCreated() {
-        return created;
-    }
-
-    public void setCreated(OffsetDateTime created) {
-        this.created = created;
-    }
-
-    public OffsetDateTime getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(OffsetDateTime updated) {
-        this.updated = updated;
-    }
-
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public List<Phone> getPhones() {
-        return phones;
-    }
-
-    public void setPhones(List<Phone> phones) {
-        this.phones = phones;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
+    @JoinTable(name = "user_role", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}, name = "uk_user_role"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id", table = "user_entity",
+                    foreignKey = @ForeignKey(name = "fk_user", value = ConstraintMode.CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", table = "role_entity",
+                    updatable = false, foreignKey = @ForeignKey(name = "fk_role", value = ConstraintMode.CONSTRAINT)) )
+    private List<Role> authorities;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(username, user.username);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, username);
-    }
-
-    @Override
-    public Collection<Role> getAuthorities() {
-        return roles;
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
