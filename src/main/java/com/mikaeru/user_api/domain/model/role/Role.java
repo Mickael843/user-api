@@ -1,4 +1,4 @@
-package com.mikaeru.user_api.domain.model.user.role;
+package com.mikaeru.user_api.domain.model.role;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

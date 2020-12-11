@@ -38,7 +38,7 @@ public class DummyData {
         }
 
         for (User userTmp : users) {
-            System.out.println(userService.saveUser(userTmp).getFirstname());
+            System.out.println(userService.save(userTmp).getFirstname());
         }
     }
 }

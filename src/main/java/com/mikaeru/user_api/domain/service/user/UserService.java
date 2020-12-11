@@ -1,22 +1,29 @@
 package com.mikaeru.user_api.domain.service.user;
 
-import com.mikaeru.user_api.domain.model.phone.Phone;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.dto.user.out.UserChart;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
 
-    User saveUser(User user);
+    User save(User user);
 
-    User updateUser(User user, List<Phone> phones);
+    void update(User user);
 
-    void deleteUserById(Long id);
-
-    void deleteUserById(Long id, User user);
+    void delete(UUID externalId);
 
     void updatePassword(String password, Long idUser);
 
     UserChart getUserChart();
+
+    Page<User> findAllPages(Integer page, Integer itemsPerPage);
+
+    List<User> findAllByName(String firstname);
+
+    Page<User> findAllByName(Integer page, Integer itemsPerPage, String firstname);
+
+    User findByExternalId(UUID externalId);
 }

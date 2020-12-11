@@ -1,7 +1,11 @@
 package com.mikaeru.user_api.dto.user.in;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mikaeru.user_api.domain.model.phone.Phone;
+import com.mikaeru.user_api.domain.model.user.User;
 import lombok.*;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -38,4 +42,18 @@ public class UserInput implements Serializable {
     private String email;
 
     private List<Phone> phones;
+
+    public User convertToEntity() {
+        ModelMapper mapper = new ModelMapper();
+        mapper.addMappings(skipIdFieldsMap);
+        return mapper.map(this, User.class);
+    }
+
+    @JsonIgnore
+    PropertyMap<UserInput, User> skipIdFieldsMap = new PropertyMap<>() {
+        @Override
+        protected void configure() {
+            skip().setId(null);
+        }
+    };
 }

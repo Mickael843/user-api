@@ -2,8 +2,10 @@ package com.mikaeru.user_api.domain.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mikaeru.user_api.domain.model.phone.Phone;
-import com.mikaeru.user_api.domain.model.user.role.Role;
+import com.mikaeru.user_api.domain.model.role.Role;
+import com.mikaeru.user_api.dto.user.out.UserOutput;
 import lombok.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -95,5 +97,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UserOutput convertToDTO() {
+        return new ModelMapper().map(this, UserOutput.class);
     }
 }

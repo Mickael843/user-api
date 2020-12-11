@@ -6,11 +6,13 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -25,11 +27,41 @@ public class ReportServiceImpl implements ReportService {
 
     private static final long serialVersionUID = 1L;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @Autowired private JdbcTemplate jdbcTemplate;
 
     @Override
-    public byte[] generateReport(String nameReport, ServletContext servletContext) throws SQLException, JRException {
+    public String generateReport(HttpServletRequest request) {
+        String pdfBase64 = null;
+
+        try {
+
+            byte[] pdf = generateReport("user-report", request.getServletContext());
+            pdfBase64 = "data:application/pdf;base64," + Base64.encodeBase64String(pdf);
+
+        } catch (SQLException | JRException e) {
+            // TODO Tratar essa exceção
+            e.printStackTrace();
+        }
+
+        return pdfBase64;
+    }
+
+    @Override
+    public String generateReport(ReportParam param, HttpServletRequest request) {
+        String pdfBase64 = null;
+
+        try {
+            byte[] pdf = generateReport("user-report-param", request.getServletContext(), param);
+            pdfBase64 = "data:application/pdf;base64," + Base64.encodeBase64String(pdf);
+        } catch (SQLException | JRException | ParseException e) {
+            // TODO Tratar essa exceção
+            e.printStackTrace();
+        }
+
+        return pdfBase64;
+    }
+
+    private byte[] generateReport(String nameReport, ServletContext servletContext) throws SQLException, JRException {
         //Obtendo conexão com o banco de dados
         try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection()) {
             //Carregar o caminho do arquivo jasper
@@ -43,10 +75,12 @@ public class ReportServiceImpl implements ReportService {
         }
     }
 
-    @Override
-    public byte[] generateReport(String nameReport, ServletContext servletContext, ReportParam param) throws SQLException, JRException, ParseException {
+    private byte[] generateReport(String nameReport, ServletContext servletContext, ReportParam param) throws SQLException, JRException, ParseException {
+
         Map<String, Object> params = getFormattedDateParameters(param);
+
         try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection()) {
+
             String pathJasper = servletContext.getRealPath("/report") + File.separator + nameReport + ".jasper";
 
             JasperPrint print = JasperFillManager.fillReport(pathJasper, params, connection);

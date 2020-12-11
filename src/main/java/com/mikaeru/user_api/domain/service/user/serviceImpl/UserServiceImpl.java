@@ -1,7 +1,5 @@
 package com.mikaeru.user_api.domain.service.user.serviceImpl;
 
-import com.mikaeru.user_api.domain.exception.BusinessException;
-import com.mikaeru.user_api.domain.model.phone.Phone;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.phone.CrudPhoneService;
 import com.mikaeru.user_api.domain.service.user.UserService;
@@ -9,98 +7,55 @@ import com.mikaeru.user_api.dto.user.out.UserChart;
 import com.mikaeru.user_api.repository.PhoneRepository;
 import com.mikaeru.user_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private static final String USER_NOT_FOUND = "Usuário não encontrado!";
 
-    @Autowired
-    private CrudPhoneService phoneService;
+    @Autowired private JdbcTemplate jdbcTemplate;
 
-    @Autowired
-    private PhoneRepository phoneRepository;
+    @Autowired private UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder encoder;
+    @Autowired private CrudPhoneService phoneService;
 
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    @Autowired private BCryptPasswordEncoder encoder;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    @Autowired private PhoneRepository phoneRepository;
+
+    @Autowired private UserDetailsServiceImpl userDetailsService;
 
     @Override
-    public User saveUser(User user) {
-        User userSaved = null;
-        user.setCreatedAt(OffsetDateTime.now());
-        user.setPassword(encoder.encode(user.getPassword()));
+    public User save(User user) {
+        // TODO Implementar o método SAVE
+        return null;
+    }
 
-        try {
-            if (user.getPhones() == null) {
-                userSaved = userRepository.save(user);
-            } else {
-                List<Phone> phones = user.getPhones();
-                user.setPhones(null);
-                userSaved = userRepository.save(user);
+    @Override
+    public void update(User user) {
+        // TODO Implementar o método UPDATE
+    }
 
-                for (Phone phone : phones) {
-                    phone.setOwner(userSaved);
-                }
+    @Override
+    public void delete(UUID externalId) {
+        Optional<User> user = userRepository.findByExternalId(externalId);
 
-                phones = phoneService.saveAllPhone(phones);
-                userSaved.setPhones(phones);
-                userSaved = userRepository.save(userSaved);
-            }
-        } catch (BusinessException e) {
-            e.printStackTrace();
-            throw new BusinessException("Error when trying to save the user");
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException(USER_NOT_FOUND);
         }
 
-        insertDefaultAccess(userSaved.getId());
-
-        return userSaved;
-    }
-
-    @Override
-    public User updateUser(User user, List<Phone> phonesSaved) {
-
-        List<Phone> phones = new ArrayList<>(user.getPhones());
-        user.setPhones(null);
-
-        for (Phone phone : phones) {
-            phone.setOwner(user);
-        }
-
-        phones = phoneService.saveAllPhone(phones);
-        phones.addAll(phonesSaved);
-        user.setPhones(phones);
-
-        user.setUpdatedAt(OffsetDateTime.now());
-
-        if (user.getPassword() != null)
-            user.setPassword(encoder.encode(user.getPassword()));
-
-        return userRepository.save(user);
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteUserById(Long id, User user) {
-        phoneRepository.deleteAll(user.getPhones());
-        userRepository.deleteById(id);
+        userRepository.delete(user.get());
     }
 
     @Override
@@ -110,26 +65,82 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserChart getUserChart() {
+
         UserChart userChart = new UserChart();
+
         String sql = "select array_agg(name_user) from user_entity where salary > 0 and " +
                 "name_user <> '' union all select cast(array_agg(salary) as character varying[]) " +
                 "from user_entity where salary > 0 and name_user <> ''";
+
         List<String> result = jdbcTemplate.queryForList(sql, String.class);
 
         if (!result.isEmpty()) {
+
             String names = result.get(0).replaceAll("\\{", "").replaceAll("}", "");
+
             String salaries = result.get(1).replaceAll("\\{", "").replaceAll("}", "");
+
             userChart.setName(names);
+
             userChart.setSalary(salaries);
+
             return userChart;
         }
 
         return userChart;
     }
 
+    @Override
+    public Page<User> findAllPages(Integer page, Integer itemsPerPage) {
+        PageRequest pageRequest = PageRequest.of(page, itemsPerPage, Sort.by("name"));
+        return userRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public List<User> findAllByName(String firstname) {
+        return userRepository.findAllByFirstname(firstname);
+    }
+
+    @Override
+    public Page<User> findAllByName(Integer page, Integer itemsPerPage, String firstname) {
+
+        PageRequest pageRequest;
+
+        Page<User> outputPage;
+
+        if (firstname == null || firstname.isEmpty() || firstname.equalsIgnoreCase("undefined")) {
+
+            pageRequest = PageRequest.of(page, itemsPerPage, Sort.by("name"));
+
+            outputPage = userRepository.findAll(pageRequest);
+
+        } else {
+
+            pageRequest = PageRequest.of(page, itemsPerPage, Sort.by("name"));
+
+            outputPage = userRepository.findByUsernamePage(firstname, pageRequest);
+        }
+
+        return outputPage;
+    }
+
+    @Override
+    public User findByExternalId(UUID externalId) {
+
+        Optional<User> user = userRepository.findByExternalId(externalId);
+
+        if (user.isEmpty()) {
+            throw new EntityNotFoundException(USER_NOT_FOUND);
+        }
+
+        return user.get();
+    }
+
     private void insertDefaultAccess(Long id) {
-        var constraint = userRepository.searchConstraintRole();
-        var constraintUK = userRepository.searchConstraintRoleUK();
+
+        String constraint = userRepository.searchConstraintRole();
+
+        String constraintUK = userRepository.searchConstraintRoleUK();
 
        if (constraint != null) {
            jdbcTemplate.execute("alter table user_entity_role drop constraint " + constraint);

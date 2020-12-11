@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,4 +49,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
         return findAll(example, pageRequest);
     }
+
+    List<User> findAllByFirstname(String firstname);
 }
