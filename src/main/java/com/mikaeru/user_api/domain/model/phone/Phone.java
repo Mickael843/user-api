@@ -6,6 +6,10 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
+
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.AUTO;
 
 @Getter
 @Setter
@@ -18,11 +22,14 @@ public class Phone implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
+    @Column(unique = true, nullable = false)
+    private UUID externalId;
+
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
 

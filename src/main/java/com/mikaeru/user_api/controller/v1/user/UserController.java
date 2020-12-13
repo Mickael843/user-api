@@ -3,6 +3,8 @@ package com.mikaeru.user_api.controller.v1.user;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.report.ReportService;
 import com.mikaeru.user_api.domain.service.user.UserService;
+import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.CreateValidation;
+import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.UpdateValidation;
 import com.mikaeru.user_api.dto.user.in.ReportParam;
 import com.mikaeru.user_api.dto.user.in.UserInput;
 import com.mikaeru.user_api.dto.user.out.UserOutput;
@@ -12,11 +14,11 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,7 +34,7 @@ public class UserController {
     @Autowired private ReportService reportService;
 
     @PostMapping
-    public ResponseEntity<UserOutput> saveUser(@Valid @RequestBody UserInput userIn) {
+    public ResponseEntity<UserOutput> saveUser(@Validated(CreateValidation.class) @RequestBody UserInput userIn) {
 
         User user = userService.save(userIn.convertToEntity());
 
@@ -45,7 +47,7 @@ public class UserController {
     }
 
     @PutMapping("/{externalId}")
-    public ResponseEntity<UserOutput> updateUser(@Valid @RequestBody UserInput userIn, @PathVariable UUID externalId) {
+    public ResponseEntity<UserOutput> updateUser(@Validated(UpdateValidation.class) @RequestBody UserInput userIn, @PathVariable UUID externalId) {
         userService.update(userIn.convertToEntity());
         return ResponseEntity.noContent().build();
     }
@@ -93,6 +95,7 @@ public class UserController {
     @CacheEvict(value = "reportCacheTwo", allEntries = true)
     @PostMapping(value = "/report", produces = "application/text")
     public ResponseEntity<String> reportDownloadWithParam(@RequestBody ReportParam param, HttpServletRequest request) {
+        // TODO gerar os relatórios e adicionar na aplicação
         return ResponseEntity.ok(reportService.generateReport(param, request));
     }
 

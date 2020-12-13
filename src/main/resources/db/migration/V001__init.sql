@@ -3,7 +3,7 @@ create table user_entity (
   external_id uuid not null,
   email character varying(60),
   created_at timestamp without time zone,
-  last_name character varying(30),
+  lastname character varying(30),
   firstname character varying(30) not null,
   user_password character varying(750) not null,
   updated_at timestamp without time zone,
@@ -15,6 +15,7 @@ create table user_entity (
 
 create table phone (
   id bigint not null,
+  external_id uuid not null,
   phone_number character varying(20) not null,
   phone_type character varying(20) not null,
   user_id bigint not null,

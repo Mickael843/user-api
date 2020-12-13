@@ -28,7 +28,7 @@ public class DummyData {
         for (int i =1; i <= NUMBER_OF_INSERTS; i++) {
             user = new User();
             user.setFirstname("Insert" + i);
-            user.setLastName("last" + i);
+            user.setLastname("last" + i);
             user.setUsername("user" + i);
             user.setPassword(encoder.encode("123"));
             user.setCreatedAt(OffsetDateTime.now());

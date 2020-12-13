@@ -33,13 +33,17 @@ public class UserServiceImpl implements UserService {
 
     @Autowired private RoleRepository roleRepository;
 
-    @Autowired private BCryptPasswordEncoder encoder;
-
     @Autowired private UserRepository userRepository;
 
-    private static final String INVALID_FIELDS = "Campos inválidos!";
+    private static final String SORT_BY = "firstname";
+
+    private static final String ROLE_USER = "ROLE_USER";
+
     private static final String ROLE_NOT_FOUND = "Role não encontrado!";
+    private static final String INVALID_FIELDS = "Campos inválidos!";
     private static final String USER_NOT_FOUND = "Usuário não encontrado!";
+
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
     public User save(User user) {
@@ -74,6 +78,9 @@ public class UserServiceImpl implements UserService {
             user.setRoles(authorities);
         }
 
+        user.setCreatedAt(OffsetDateTime.now());
+        user.setPassword(encoder.encode(user.getPassword()));
+
         try {
             user = userRepository.save(user);
 
@@ -83,18 +90,27 @@ public class UserServiceImpl implements UserService {
                     phone.setOwner(user);
                 }
 
-                phones = phoneService.saveAll(phones);
+                user.setPhones(phoneService.saveAll(phones));
+
+                user = userRepository.save(user);
             }
-
-            user.setPhones(phones);
-
-            user = userRepository.save(user);
 
         } catch (DataIntegrityViolationException e) {
             throw new DataIntegrityViolationException(INVALID_FIELDS);
         }
 
         if (insertDefaultAccess) {
+
+            Optional<Role> authority = roleRepository.findByAuthority(ROLE_USER);
+
+            if (authority.isEmpty()) {
+                Role role = new Role();
+
+                role.setAuthority(ROLE_USER);
+
+                roleRepository.save(role);
+            }
+
             insertDefaultAccess(user.getId());
         }
 
@@ -116,22 +132,22 @@ public class UserServiceImpl implements UserService {
 
         List<Role> authorities = new ArrayList<>(userOptional.get().getRoles());
 
-        if (user.getUsername().isBlank()) {
+        if (user.getUsername() == null) {
             user.setUsername(userOptional.get().getUsername());
         }
 
-        if (user.getPassword().isBlank()) {
+        if (user.getPassword() == null) {
             user.setPassword(userOptional.get().getPassword());
         } else {
             user.setPassword(encoder.encode(user.getPassword()));
         }
 
-        if (user.getEmail().isBlank()) {
+        if (user.getEmail() == null) {
             user.setEmail(userOptional.get().getEmail());
         }
 
-        if (user.getLastName().isBlank()) {
-            user.setLastName(userOptional.get().getLastName());
+        if (user.getLastname() == null) {
+            user.setLastname(userOptional.get().getLastname());
         }
 
         if (user.getPhones() == null && userOptional.get().getPhones() != null) {
@@ -186,41 +202,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserChart getUserChart() {
-
-        UserChart userChart = new UserChart();
-
-        String sql = "select array_agg(name_user) from user_entity where salary > 0 and " +
-                "name_user <> '' union all select cast(array_agg(salary) as character varying[]) " +
-                "from user_entity where salary > 0 and name_user <> ''";
-
-        List<String> result = jdbcTemplate.queryForList(sql, String.class);
-
-        if (!result.isEmpty()) {
-
-            String names = result.get(0).replaceAll("\\{", "").replaceAll("}", "");
-
-            String salaries = result.get(1).replaceAll("\\{", "").replaceAll("}", "");
-
-            userChart.setName(names);
-
-            userChart.setSalary(salaries);
-
-            return userChart;
-        }
-
-        return userChart;
-    }
-
-    @Override
     public Page<User> findAllPages(Integer page, Integer itemsPerPage) {
-        PageRequest pageRequest = PageRequest.of(page, itemsPerPage, Sort.by("name"));
-        return userRepository.findAll(pageRequest);
+        PageRequest pageRequest = PageRequest.of(page, itemsPerPage, Sort.by(SORT_BY));
+
+        Page<User> userPage = userRepository.findAll(pageRequest);
+
+        userPage.forEach(user -> {
+            if (user.getPhones().size() == 0) user.setPhones(null);
+        });
+
+        return userPage;
     }
 
     @Override
     public List<User> findAllByName(String firstname) {
-        return userRepository.findAllByFirstname(firstname);
+
+        List<User> users = userRepository.findAllByFirstname(firstname);
+
+        users.forEach(user -> {
+            if (user.getPhones().size() == 0) user.setPhones(null);
+        });
+
+        return users;
     }
 
     @Override
@@ -232,16 +235,20 @@ public class UserServiceImpl implements UserService {
 
         if (firstname == null || firstname.isEmpty() || firstname.equalsIgnoreCase("undefined")) {
 
-            pageRequest = PageRequest.of(page, itemsPerPage, Sort.by("name"));
+            pageRequest = PageRequest.of(page, itemsPerPage, Sort.by(SORT_BY));
 
             outputPage = userRepository.findAll(pageRequest);
 
         } else {
 
-            pageRequest = PageRequest.of(page, itemsPerPage, Sort.by("name"));
+            pageRequest = PageRequest.of(page, itemsPerPage, Sort.by(SORT_BY));
 
             outputPage = userRepository.findByUsernamePage(firstname, pageRequest);
         }
+
+        outputPage.forEach(user -> {
+            if (user.getPhones().size() == 0) user.setPhones(null);
+        });
 
         return outputPage;
     }
@@ -255,6 +262,8 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(USER_NOT_FOUND);
         }
 
+        if (user.get().getPhones().size() == 0) user.get().setPhones(null);
+
         return user.get();
     }
 
@@ -262,18 +271,12 @@ public class UserServiceImpl implements UserService {
 
         String constraint = userRepository.searchConstraintRole();
 
-        String constraintUK = userRepository.searchConstraintRoleUK();
-
        if (constraint != null) {
-           jdbcTemplate.execute("alter table user_entity_role drop constraint " + constraint);
+           jdbcTemplate.execute("ALTER TABLE user_role DROP CONSTRAINT " + constraint);
        }
 
-       if (constraintUK != null) {
-           jdbcTemplate.execute("alter table user_entity_role drop constraint " + constraintUK);
-       }
-
-        jdbcTemplate.execute("insert into user_entity_role (user_entity_id, role_id) values(" +
-                id +", (select id from role where authority = 'ROLE_USER'))");
+        jdbcTemplate.execute("INSERT INTO user_role (user_id, role_id) VALUES(" +
+                id +", (SELECT id FROM role_entity WHERE authority = '" + ROLE_USER + "'))");
     }
 
     private void userValidation(User user) {

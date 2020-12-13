@@ -3,7 +3,12 @@ package com.mikaeru.user_api.domain.model.role;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import static javax.persistence.GenerationType.AUTO;
 
 @Getter
 @Setter
@@ -17,7 +22,7 @@ public class Role implements GrantedAuthority {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
     private String authority;

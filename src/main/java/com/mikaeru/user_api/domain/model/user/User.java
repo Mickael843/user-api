@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.GenerationType.AUTO;
 
 @Getter
 @Setter
@@ -30,7 +30,7 @@ public class User implements UserDetails {
 
     @Id
     @JsonIgnore
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = AUTO)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -39,7 +39,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String firstname;
 
-    private String lastName;
+    private String lastname;
 
     @Column(nullable = false, unique = true)
     private String username;

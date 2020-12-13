@@ -17,8 +17,6 @@ public interface UserService {
 
     void updatePassword(String password, Long idUser);
 
-    UserChart getUserChart();
-
     Page<User> findAllPages(Integer page, Integer itemsPerPage);
 
     List<User> findAllByName(String firstname);

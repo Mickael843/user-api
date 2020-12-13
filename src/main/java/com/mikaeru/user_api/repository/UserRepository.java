@@ -25,18 +25,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Transactional
-    @Query(value = "update user_entity set password_user = ?1 where id = ?2", nativeQuery = true)
+    @Query(value = "update user_entity set user_password = ?1 where id = ?2", nativeQuery = true)
     void  updatePassword(String password, Long id);
 
     @Query(value = "select constraint_name from information_schema.constraint_column_usage where " +
-            "table_name = 'user_entity_role' and column_name = 'role_id' and constraint_name <>'unique_role_user_entity' " +
-            "and constraint_name <> 'uk_role_id'", nativeQuery = true)
+            "table_name = 'user_role' and column_name = 'role_id' and constraint_name <>'uk_user_role'", nativeQuery = true)
     String searchConstraintRole();
-
-    @Query(value = "select constraint_name from information_schema.constraint_column_usage where " +
-            "table_name = 'user_entity_role' and column_name = 'role_id' and constraint_name <>'unique_role_user_entity' " +
-            "and constraint_name <>'uk_lubu5auf4bujgmat9hwqocejj'", nativeQuery = true)
-    String searchConstraintRoleUK();
 
     default Page<User> findByUsernamePage(String name, PageRequest pageRequest) {
         User user = new User();
