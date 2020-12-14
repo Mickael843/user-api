@@ -1,7 +1,7 @@
 package com.mikaeru.user_api.domain.service;
 
 import com.mikaeru.user_api.domain.model.user.User;
-import com.mikaeru.user_api.domain.helper.ApplicationContextLoadHelper;
+import com.mikaeru.user_api.helper.ApplicationContextLoadHelper;
 import com.mikaeru.user_api.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

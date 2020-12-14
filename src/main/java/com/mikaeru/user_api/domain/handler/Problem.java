@@ -1,4 +1,4 @@
-package com.mikaeru.user_api.exceptionHandler;
+package com.mikaeru.user_api.domain.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

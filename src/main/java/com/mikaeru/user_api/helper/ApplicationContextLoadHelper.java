@@ -1,4 +1,4 @@
-package com.mikaeru.user_api.domain.helper;
+package com.mikaeru.user_api.helper;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;

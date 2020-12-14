@@ -3,7 +3,7 @@ package com.mikaeru.user_api.controller.v1.user;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.email.SendEmailService;
 import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.RecoveryValidation;
-import com.mikaeru.user_api.exceptionHandler.Problem;
+import com.mikaeru.user_api.domain.handler.Problem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

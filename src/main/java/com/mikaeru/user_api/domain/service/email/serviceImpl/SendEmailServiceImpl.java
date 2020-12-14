@@ -3,7 +3,7 @@ package com.mikaeru.user_api.domain.service.email.serviceImpl;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.email.SendEmailService;
 import com.mikaeru.user_api.domain.service.user.UserService;
-import com.mikaeru.user_api.exceptionHandler.Problem;
+import com.mikaeru.user_api.domain.handler.Problem;
 import com.mikaeru.user_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

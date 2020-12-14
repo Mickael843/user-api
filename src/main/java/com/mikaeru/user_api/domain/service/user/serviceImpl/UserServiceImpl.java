@@ -1,11 +1,12 @@
 package com.mikaeru.user_api.domain.service.user.serviceImpl;
 
+import com.mikaeru.user_api.domain.exception.DomainException;
+import com.mikaeru.user_api.domain.exception.DuplicatedDataException;
 import com.mikaeru.user_api.domain.model.phone.Phone;
 import com.mikaeru.user_api.domain.model.role.Role;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.phone.PhoneService;
 import com.mikaeru.user_api.domain.service.user.UserService;
-import com.mikaeru.user_api.dto.user.out.UserChart;
 import com.mikaeru.user_api.repository.RoleRepository;
 import com.mikaeru.user_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -291,6 +292,47 @@ public class UserServiceImpl implements UserService {
             if (user.getUsername().isEmpty() || user.getPassword().isEmpty()) {
                 throw new DataIntegrityViolationException(INVALID_FIELDS);
             }
+        }
+    }
+
+    private void duplicatedFields(User user, User userInDatabase) {
+
+        StringBuilder duplicatedField = new StringBuilder();
+
+        if (userInDatabase.getId().equals(user.getId())) {
+            duplicatedField.append("id");
+        }
+
+        if (userInDatabase.getUsername().equals(user.getUsername())) {
+            duplicatedField.append("|username");
+        }
+
+        if (userInDatabase.getEmail().equals(user.getEmail())) {
+            duplicatedField.append("|email");
+        }
+
+        if (user.getPhones() != null && user.getPhones().size() > 0) {
+
+            int cont = 0;
+
+            for (Phone phone: user.getPhones()) {
+                cont += 1;
+                for (Phone phoneInDatabase: userInDatabase.getPhones()) {
+
+                    if (phone.getNumber().equals(phoneInDatabase.getNumber())) {
+                        duplicatedField.append("|phone: ").append(cont);
+                    }
+                }
+            }
+        }
+
+        if (duplicatedField.length() > 0) {
+
+            DomainException.Error error = DomainException.Error.INVALID_DUPLICATED_DATA;
+
+            error.setFields(DomainException.Error.convertToFieldList(duplicatedField.toString()));
+
+            throw new DuplicatedDataException(error);
         }
     }
 }
