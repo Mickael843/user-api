@@ -1,12 +1,12 @@
 package com.mikaeru.user_api.dto.user.in;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mikaeru.user_api.domain.model.phone.Phone;
-import com.mikaeru.user_api.domain.model.role.Role;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.CreateValidation;
 import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.RecoveryValidation;
 import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.UpdateValidation;
+import com.mikaeru.user_api.dto.phone.PhoneDTO;
+import com.mikaeru.user_api.dto.role.RoleDTO;
 import lombok.*;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -46,9 +46,9 @@ public class UserInput implements Serializable {
     @NotBlank(groups = {CreateValidation.class})
     private String email;
 
-    private List<Phone> phones;
+    private List<PhoneDTO> phones;
 
-    private List<Role> authorities;
+    private List<RoleDTO> authorities;
 
     public User convertToEntity() {
         ModelMapper mapper = new ModelMapper();

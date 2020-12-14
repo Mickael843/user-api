@@ -1,7 +1,6 @@
 package com.mikaeru.user_api.domain.service.user;
 
 import com.mikaeru.user_api.domain.model.user.User;
-import com.mikaeru.user_api.dto.user.out.UserChart;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

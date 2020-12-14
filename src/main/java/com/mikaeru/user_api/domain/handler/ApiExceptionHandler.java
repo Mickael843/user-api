@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityNotFoundException;
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
@@ -31,6 +32,17 @@ import static org.springframework.http.HttpStatus.*;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired private MessageSource messageSource;
+
+    @ExceptionHandler(MessagingException.class)
+    protected ResponseEntity<Object> handleMessagingException(MessagingException exception, WebRequest request) {
+        Problem problem = new Problem();
+
+        problem.setStatus(BAD_REQUEST.value());
+        problem.setTitle(exception.getMessage());
+        problem.setDateTime(OffsetDateTime.now());
+
+        return handleExceptionInternal(exception, problem, new HttpHeaders(), BAD_REQUEST, request);
+    }
 
     @ExceptionHandler(NoSuchElementException.class)
     protected ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException exception, WebRequest request) {

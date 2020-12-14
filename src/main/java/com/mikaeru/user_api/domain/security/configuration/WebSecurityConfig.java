@@ -22,9 +22,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    private static final String[] FREE_WAY = {
+    private static final String[] UNLOCKED = {
             "/register",
-            "/v1/recovery"
+            "/v1/recovery",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/*/api-docs",
+            "/*/api-docs-ext",
     };
 
     @Override
@@ -34,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .disable().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(FREE_WAY).permitAll().anyRequest().authenticated()
+                .antMatchers(UNLOCKED).permitAll().anyRequest().authenticated()
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .and()

@@ -8,6 +8,7 @@ import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.UpdateVal
 import com.mikaeru.user_api.dto.user.in.ReportParam;
 import com.mikaeru.user_api.dto.user.in.UserInput;
 import com.mikaeru.user_api.dto.user.out.UserOutput;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -23,8 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping(value = "/v1/users")
+@Api(produces = APPLICATION_JSON_VALUE, description = "Responsável pelas Operações do usuário.", tags = {"User Controller"})
 public class UserController {
 
     private static final Integer ITEMS_PER_PAGE= 6;

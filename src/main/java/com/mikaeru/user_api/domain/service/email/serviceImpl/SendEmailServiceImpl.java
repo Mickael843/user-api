@@ -1,9 +1,9 @@
 package com.mikaeru.user_api.domain.service.email.serviceImpl;
 
+import com.mikaeru.user_api.domain.handler.Problem;
 import com.mikaeru.user_api.domain.model.user.User;
 import com.mikaeru.user_api.domain.service.email.SendEmailService;
 import com.mikaeru.user_api.domain.service.user.UserService;
-import com.mikaeru.user_api.domain.handler.Problem;
 import com.mikaeru.user_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +14,6 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -47,9 +45,7 @@ public class SendEmailServiceImpl implements SendEmailService {
             throw new EntityNotFoundException(USER_NOT_FOUND);
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        String newPassword = dateFormat.format(Calendar.getInstance().getTime());
+        String newPassword = generatePassword();
 
         userService.updatePassword(encoder.encode(newPassword), user.get().getId());
 
@@ -57,9 +53,12 @@ public class SendEmailServiceImpl implements SendEmailService {
 
         try {
             sendEmail(subject, user.get().getEmail(), message);
-        } catch (Exception e) {
-            // TODO Tratar corretamente essa exceção
-            // throw new MessagingException("");
+        } catch (MessagingException e) {
+            try {
+                throw new MessagingException("Email informado não existe!");
+            } catch (MessagingException messagingException) {
+                messagingException.printStackTrace();
+            }
         }
 
         problem.setStatus(HttpStatus.OK.value());
@@ -98,5 +97,27 @@ public class SendEmailServiceImpl implements SendEmailService {
         msg.setText(message);
 
         Transport.send(msg);
+    }
+
+    private String generatePassword() {
+
+        int maxCharacters = 8;
+
+        String[] characters = {
+                "0", "1", "b", "2", "4", "5", "6", "7", "8",
+                "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+                "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w",
+                "x", "y", "z"
+        };
+
+        StringBuilder password = new StringBuilder();
+
+        for (int i = 0; i < maxCharacters; i++) {
+
+            int index = (int) (Math.random() * characters.length);
+            password.append(characters[index]);
+        }
+
+        return password.toString();
     }
 }
