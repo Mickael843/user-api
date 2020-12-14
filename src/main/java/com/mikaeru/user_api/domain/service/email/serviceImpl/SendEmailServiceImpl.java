@@ -24,14 +24,14 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     @Autowired private UserService userService;
 
-    @Autowired private BCryptPasswordEncoder encoder;
-
     @Autowired private UserRepository userRepository;
 
     private static final String USERNAME = "mickaelptu321@gmail.com";
     private static final String PASSWORD = "mickaelluiz321";
 
     private static final String USER_NOT_FOUND = "Usuário não encontrado!";
+
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Override
     public Problem sendRecoveryEmail(String username) {
