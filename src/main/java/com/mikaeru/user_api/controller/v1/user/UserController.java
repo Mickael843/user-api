@@ -5,7 +5,6 @@ import com.mikaeru.user_api.domain.service.report.ReportService;
 import com.mikaeru.user_api.domain.service.user.UserService;
 import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.CreateValidation;
 import com.mikaeru.user_api.domain.validation.user.UserValidationGroup.UpdateValidation;
-import com.mikaeru.user_api.dto.user.in.ReportParam;
 import com.mikaeru.user_api.dto.user.in.UserInput;
 import com.mikaeru.user_api.dto.user.out.UserOutput;
 import io.swagger.annotations.Api;
@@ -93,14 +92,6 @@ public class UserController {
     @GetMapping(value = "/report", produces = "application/text")
     public ResponseEntity<String> reportDownload(HttpServletRequest request) {
         return ResponseEntity.ok(reportService.generateReport(request));
-    }
-
-    @CachePut(value = "reportCacheTwo")
-    @CacheEvict(value = "reportCacheTwo", allEntries = true)
-    @PostMapping(value = "/report", produces = "application/text")
-    public ResponseEntity<String> reportDownloadWithParam(@RequestBody ReportParam param, HttpServletRequest request) {
-        // TODO gerar os relatórios e adicionar na aplicação
-        return ResponseEntity.ok(reportService.generateReport(param, request));
     }
 
     private List<UserOutput> convertToCollections(List<User> users) {
