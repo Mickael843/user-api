@@ -10,6 +10,10 @@ import javax.persistence.Table;
 
 import static javax.persistence.GenerationType.AUTO;
 
+/**
+ * Classe que representa a entidade Role
+ * @author Mickael Luiz
+ */
 @Getter
 @Setter
 @Entity

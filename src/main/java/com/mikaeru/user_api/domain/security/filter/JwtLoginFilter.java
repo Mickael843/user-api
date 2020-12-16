@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Intercepta a requisição de login e verifica os dados.
+ * @author Mickael Luiz
+ */
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     public JwtLoginFilter(String url, AuthenticationManager manager) {

@@ -6,6 +6,11 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Classe que representa um problema ou um erro que pode acontecer na aplicação.
+ *
+ * @author Mickael Luiz
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Problem {
 
@@ -17,6 +22,9 @@ public class Problem {
 
     private OffsetDateTime dateTime;
 
+    /**
+     * Classe estática que representa um campo que está com problema.
+     */
     public static class Field {
         private String name;
         private String message;

@@ -7,6 +7,10 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * Classe que representa o objeto de transferência de dados de um Telefone.
+ * @author Mickael Luiz
+ */
 @Getter
 @Setter
 @NoArgsConstructor

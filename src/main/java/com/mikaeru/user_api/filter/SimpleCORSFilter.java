@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Classe que habilita o CORS para todos os clients da aplicação.
+ * @author Mickael Luiz
+ */
 @Log4j2
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)

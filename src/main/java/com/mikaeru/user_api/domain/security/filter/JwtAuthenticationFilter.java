@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Classe que filtra todas as requisições enviadas para a api e verifica se possui o token de autenticação.
+ * @author Mickael Luiz
+ */
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     @Override
@@ -21,11 +25,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 .getAuthentication((HttpServletRequest) servletRequest, (HttpServletResponse) servletResponse);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        HttpServletResponse response = (HttpServletResponse) servletResponse;
-//        response.setHeader("Access-Control-Allow-Origin", "*");
-//        response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
-//        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

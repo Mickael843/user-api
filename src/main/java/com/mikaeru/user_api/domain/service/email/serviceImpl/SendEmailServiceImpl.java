@@ -17,6 +17,10 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * Classe que implementa a lógica por de trás do envio de email para o usuário.
+ * @author Mickael Luiz
+ */
 @Service
 public class SendEmailServiceImpl implements SendEmailService {
 
@@ -31,6 +35,9 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    /**
+     * @see SendEmailService#sendRecoveryEmail(String)
+     */
     @Override
     public Problem sendRecoveryEmail(String username) {
 
@@ -67,6 +74,14 @@ public class SendEmailServiceImpl implements SendEmailService {
         return problem;
     }
 
+    /**
+     * Método responsável por enviar um email genérico para o usuário especificado.
+     *
+     * @param subject Assunto do email
+     * @param recipientEmail Endereço de destino do email.
+     * @param message Mensagem que ira no corpo de email.
+     * @throws MessagingException Erro ao enviar um email.
+     */
     private void sendEmail(String subject, String recipientEmail, String message) throws MessagingException {
 
         Properties properties = new Properties();
@@ -99,6 +114,11 @@ public class SendEmailServiceImpl implements SendEmailService {
         Transport.send(msg);
     }
 
+    /**
+     * Método que gera uma senha aleatória.
+     *
+     * @return <code>{@link String}</code> object
+     */
     private String generatePassword() {
 
         int maxCharacters = 8;

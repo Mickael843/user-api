@@ -14,6 +14,10 @@ import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+/**
+ * Classe que representa o objeto de transferência de dados de Saída de um Usuário.
+ * @author Mickael Luiz
+ */
 @Getter
 @Setter
 @NoArgsConstructor

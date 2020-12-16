@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+/**
+ * Interface que implementa as operações CRUD da classe Role.
+ * @author Mickael Luiz
+ */
 @Repository
 @Transactional
 public interface RoleRepository extends JpaRepository<Role, Long> {

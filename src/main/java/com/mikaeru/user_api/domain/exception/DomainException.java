@@ -3,6 +3,11 @@ package com.mikaeru.user_api.domain.exception;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Classe que implementa as exceções de dominio da api.
+ *
+ * @author Mickael Luiz
+ */
 public class DomainException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
@@ -16,6 +21,9 @@ public class DomainException extends RuntimeException {
         fields = error.fields;
     }
 
+    /**
+     * Erros de dominio
+     */
     public enum Error {
         INVALID_DUPLICATED_DATA("Dados duplicados!", 1000);
 

@@ -11,6 +11,10 @@ import java.util.UUID;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.AUTO;
 
+/**
+ * Classe que representa a entidade Phone
+ * @author Mickael Luiz
+ */
 @Getter
 @Setter
 @Entity

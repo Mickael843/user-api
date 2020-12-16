@@ -9,6 +9,11 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+/**
+ * Classe responsável pela configuração do documentação fornecida pelo swagger.
+ *
+ * @author Mickael Luiz
+ */
 public class SwaggerConfig {
 
     @Value("${release.version}")

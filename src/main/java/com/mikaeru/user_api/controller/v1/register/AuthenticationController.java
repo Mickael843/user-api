@@ -24,6 +24,17 @@ public class AuthenticationController {
 
     @Autowired private UserService userService;
 
+    /**
+     * Método responsável por salvar um novo usuário.
+     *
+     * @param userIn {@link UserInput} user DTO (Objeto de transferência de dados)
+     * @return <code>{@link ResponseEntity}</code> object
+     *
+     * HTTP STATUS:
+     *
+     * 201 (Created) - Caso o fluxo de criação de um novo usuário seja executado com sucesso.
+     * 400 (Bad Request) - Os dados enviados pelo client são inválidos.
+     */
     @PostMapping(value = "/register", produces = APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Method responsible for registering new users in the system.", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserInput userIn) {

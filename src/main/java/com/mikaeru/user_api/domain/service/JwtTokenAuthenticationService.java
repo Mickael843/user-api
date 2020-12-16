@@ -15,6 +15,10 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 
+/**
+ * Classe que realiza a autenticação de um usuário no sistema.
+ * @author Mickael Luiz
+ */
 @Service
 public class JwtTokenAuthenticationService {
 
@@ -23,6 +27,13 @@ public class JwtTokenAuthenticationService {
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authorization";
 
+    /**
+     * Método que adiciona um toke de autenticação na resposta da requisição.
+     *
+     * @param response {@link HttpServletResponse}
+     * @param username nome de login do usuário
+     * @throws IOException
+     */
     public void addAuthentication(HttpServletResponse response, String username) throws IOException {
         String jwt = Jwts.builder()
                 .setSubject(username)
@@ -31,16 +42,19 @@ public class JwtTokenAuthenticationService {
 
         String token = TOKEN_PREFIX + " " + jwt;
 
-        openCORS(response);
-
         response.addHeader(HEADER_STRING, token);
         response.getWriter().write("{\"Authorization\" : \"" + token + "\" }");
     }
 
+    /**
+     * Método que verifica se existe um token de autenticação na requisição feita pelo client.
+     *
+     * @param request {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     * @return <code>{@link Authentication}</code> object
+     */
     public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader(HEADER_STRING);
-
-        openCORS(response);
 
         if (token != null) {
             String username = Jwts.parser()
@@ -63,15 +77,5 @@ public class JwtTokenAuthenticationService {
             }
         }
         return null;
-    }
-
-    private void openCORS(HttpServletResponse response) {
-//        if (response.getHeader("Access-Control-Allow-Origin") == null) {
-//            response.addHeader("Access-Control-Allow-Origin", "*");
-//        }
-//
-//        if (response.getHeader("Access-Control-Allow-Headers") == null) {
-//            response.addHeader("Access-Control-Allow-Headers", "*");
-//        }
     }
 }

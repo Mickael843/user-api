@@ -20,6 +20,19 @@ public class PhoneController {
 
     @Autowired private PhoneService phoneService;
 
+    /**
+     * Método responsável por deletar um telefone de um usuário especifico.
+     *
+     * @param userUUID id externo do proprietário do telefone
+     * @param phoneUUID id externo do telefone
+     * @return <code>{@link ResponseEntity}</code> object
+     *
+     * HTTP STATUS:
+     *
+     * 204 (No Content) - Se tudo ocorrer bem, sem erros.
+     * 404 (Not Found) - Caso o usuário ou o telefone não seja encontrado.
+     * 500 (Internal Server Error) - Erro interno do servidor.
+     */
     @DeleteMapping("/{phoneUUID}")
     public ResponseEntity<?> delete(@PathVariable UUID userUUID, @PathVariable UUID phoneUUID) {
         phoneService.delete(userUUID, phoneUUID);

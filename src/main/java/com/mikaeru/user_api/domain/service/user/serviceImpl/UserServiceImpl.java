@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Classe que implementa a lógica por de trás das operações que acontecem com um usuário.
+ * @author Mickael Luiz
+ */
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -46,6 +50,9 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    /**
+     * @see UserService#save(User)
+     */
     @Override
     public User save(User user) {
 
@@ -118,6 +125,9 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * @see UserService#update(User)
+     */
     @Override
     public void update(User user) {
 
@@ -186,6 +196,9 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * @see UserService#delete(UUID)
+     */
     @Override
     public void delete(UUID externalId) {
         Optional<User> user = userRepository.findByExternalId(externalId);
@@ -197,11 +210,17 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user.get());
     }
 
+    /**
+     * @see UserService#updatePassword(String, Long)
+     */
     @Override
     public void updatePassword(String password, Long id) {
         userRepository.updatePassword(password, id);
     }
 
+    /**
+     * @see UserService#findAllPages(Integer, Integer)
+     */
     @Override
     public Page<User> findAllPages(Integer page, Integer itemsPerPage) {
         PageRequest pageRequest = PageRequest.of(page, itemsPerPage, Sort.by(SORT_BY));
@@ -215,6 +234,9 @@ public class UserServiceImpl implements UserService {
         return userPage;
     }
 
+    /**
+     * @see UserService#findAllByName(String)
+     */
     @Override
     public List<User> findAllByName(String firstname) {
 
@@ -227,6 +249,9 @@ public class UserServiceImpl implements UserService {
         return users;
     }
 
+    /**
+     * @see UserService#findAllByName(Integer, Integer, String)
+     */
     @Override
     public Page<User> findAllByName(Integer page, Integer itemsPerPage, String firstname) {
 
@@ -254,6 +279,9 @@ public class UserServiceImpl implements UserService {
         return outputPage;
     }
 
+    /**
+     * @see UserService#findByExternalId(UUID)
+     */
     @Override
     public User findByExternalId(UUID externalId) {
 
@@ -268,6 +296,11 @@ public class UserServiceImpl implements UserService {
         return user.get();
     }
 
+    /**
+     * Método responsável por inserir dentro de um usuário o acesso padrão ao sistema (ROLE_USER)
+     *
+     * @param id identificador do usuário
+     */
     private void insertDefaultAccess(Long id) {
 
         String constraint = userRepository.searchConstraintRole();
@@ -280,6 +313,11 @@ public class UserServiceImpl implements UserService {
                 id +", (SELECT id FROM role_entity WHERE authority = '" + ROLE_USER + "'))");
     }
 
+    /**
+     * Método responsável por validar os dados dos campos de um usuário.
+     *
+     * @param user {@link User} entity
+     */
     private void userValidation(User user) {
 
         if (user.getExternalId() == null || user.getFirstname().isBlank()) {
@@ -295,6 +333,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Método que verifica se há dados duplicados em um usuário.
+     *
+     * @param user {@link User} entity
+     * @param userInDatabase {@link User} usuário já salvo no banco de dados
+     */
     private void duplicatedFields(User user, User userInDatabase) {
 
         StringBuilder duplicatedField = new StringBuilder();

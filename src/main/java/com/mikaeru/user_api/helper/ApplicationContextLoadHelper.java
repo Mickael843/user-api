@@ -6,6 +6,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+/**
+ * Classe responsável por carregar o contexto da aplicação.
+ * @author Mickael Luiz
+ */
 @Component
 public class ApplicationContextLoadHelper implements ApplicationContextAware {
 

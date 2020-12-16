@@ -18,6 +18,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Classe que representa o objeto de transferência de dados de Entrada de um Usuário.
+ * @author Mickael Luiz
+ */
 @Getter
 @Setter
 @NoArgsConstructor

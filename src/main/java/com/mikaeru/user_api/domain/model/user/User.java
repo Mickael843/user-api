@@ -17,6 +17,10 @@ import java.util.UUID;
 
 import static javax.persistence.GenerationType.AUTO;
 
+/**
+ * Classe que representa a entidade User
+ * @author Mickael Luiz
+ */
 @Getter
 @Setter
 @Entity

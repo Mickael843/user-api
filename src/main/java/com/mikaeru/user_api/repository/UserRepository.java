@@ -15,6 +15,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Interface que implementa as operações CRUD de um Usuário.
+ * @author Mickael Luiz
+ */
 @Repository
 @Transactional
 public interface UserRepository extends JpaRepository<User, Long> {

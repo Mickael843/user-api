@@ -18,11 +18,18 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Objects;
 
+/**
+ * Classe que implementa a lógica de criação de relatórios.
+ * @author Mickael Luiz
+ */
 @Service
 public class ReportServiceImpl implements ReportService {
 
     @Autowired private JdbcTemplate jdbcTemplate;
 
+    /**
+     * @see ReportService#generateReport(HttpServletRequest)
+     */
     @Override
     public String generateReport(HttpServletRequest request) {
         String pdfBase64 = null;
@@ -40,6 +47,15 @@ public class ReportServiceImpl implements ReportService {
         return pdfBase64;
     }
 
+    /**
+     * Método responsável pela criação de um relatório genérico.
+     *
+     * @param nameReport Nome do relatório
+     * @param servletContext {@link ServletContext}
+     * @return <code>byte[]</code> relatório
+     * @throws SQLException
+     * @throws JRException
+     */
     private byte[] generateReport(String nameReport, ServletContext servletContext) throws SQLException, JRException {
         //Obtendo conexão com o banco de dados
         try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection()) {

@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Classe responsável por implementar a lógica das operações de um telefone.
+ * @author Mickael Luiz
+ */
 @Service
 public class PhoneServiceImpl implements PhoneService {
 
@@ -25,6 +29,9 @@ public class PhoneServiceImpl implements PhoneService {
     private static final String USER_NOT_FOUND = "Usuário não encontrado!";
     private static final String PHONE_NOT_FOUND = "Telefone não encontrado!";
 
+    /**
+     * @see PhoneService#saveAll(List)
+     */
     @Override
     public List<Phone> saveAll(List<Phone> phones) {
 
@@ -37,6 +44,9 @@ public class PhoneServiceImpl implements PhoneService {
         return phones;
     }
 
+    /**
+     * @see PhoneService#delete(UUID, UUID)
+     */
     @Override
     public void delete(UUID userUUID, UUID phoneUUID) {
 

@@ -4,6 +4,10 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * Classe que representa o objeto de transferência de dados da classe Role.
+ * @author Mickael Luiz
+ */
 @Getter
 @Setter
 @NoArgsConstructor
