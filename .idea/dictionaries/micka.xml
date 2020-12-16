@@ -6,6 +6,7 @@
       <w>acontecem</w>
       <w>acontecer</w>
       <w>adiciona</w>
+      <w>adicionado</w>
       <w>admim</w>
       <w>aleatória</w>
       <w>algoritmo</w>
@@ -21,11 +22,14 @@
       <w>caracteres</w>
       <w>carregar</w>
       <w>caso</w>
+      <w>celular</w>
+      <w>chamado</w>
       <w>classe</w>
       <w>conexão</w>
       <w>configuração</w>
       <w>consumirem</w>
       <w>contexto</w>
+      <w>controle</w>
       <w>corpo</w>
       <w>corretamente</w>
       <w>cors</w>
@@ -33,11 +37,13 @@
       <w>criação</w>
       <w>dados</w>
       <w>datasource</w>
+      <w>definir</w>
       <w>deleta</w>
       <w>deletado</w>
       <w>deletar</w>
       <w>dentro</w>
       <w>destino</w>
+      <w>detalhes</w>
       <w>deve</w>
       <w>documentação</w>
       <w>dominio</w>
@@ -55,6 +61,7 @@
       <w>erros</w>
       <w>especificado</w>
       <w>especifico</w>
+      <w>esse</w>
       <w>estar</w>
       <w>está</w>
       <w>estática</w>
@@ -65,14 +72,19 @@
       <w>externo</w>
       <w>fazer</w>
       <w>feita</w>
+      <w>ferramentas</w>
       <w>filtra</w>
       <w>fluxo</w>
       <w>forem</w>
+      <w>fornece</w>
       <w>fornecida</w>
+      <w>funcionalidades</w>
+      <w>funções</w>
       <w>genérico</w>
       <w>gera</w>
       <w>gerada</w>
       <w>gerar</w>
+      <w>geração</w>
       <w>gerenciamento</w>
       <w>gmail</w>
       <w>habilita</w>
@@ -86,6 +98,7 @@
       <w>interno</w>
       <w>inválidos</w>
       <w>jdbc</w>
+      <w>joãozin</w>
       <w>libera</w>
       <w>lista</w>
       <w>lubu</w>
@@ -95,20 +108,25 @@
       <w>mikaeru</w>
       <w>máximo</w>
       <w>mínimo</w>
+      <w>necessário</w>
       <w>nenhum</w>
       <w>novo</w>
       <w>nulo</w>
       <w>objeto</w>
+      <w>obrigatórios</w>
       <w>obtendo</w>
       <w>ocorre</w>
       <w>ocorrer</w>
+      <w>onde</w>
       <w>operações</w>
       <w>ordenados</w>
+      <w>otimizados</w>
       <w>pela</w>
       <w>pelas</w>
       <w>pkey</w>
       <w>pode</w>
       <w>possui</w>
+      <w>possível</w>
       <w>postgre</w>
       <w>postgresql</w>
       <w>principais</w>
@@ -121,6 +139,7 @@
       <w>realiza</w>
       <w>realizadas</w>
       <w>realizar</w>
+      <w>recuperar</w>
       <w>recuperação</w>
       <w>refatorando</w>
       <w>relatório</w>
@@ -130,12 +149,14 @@
       <w>requisição</w>
       <w>requisições</w>
       <w>resposta</w>
+      <w>restrições</w>
       <w>retorna</w>
       <w>retornados</w>
       <w>retornarem</w>
       <w>retorno</w>
       <w>salvar</w>
       <w>saída</w>
+      <w>seguinte</w>
       <w>seja</w>
       <w>senha</w>
       <w>senho</w>
@@ -144,11 +165,15 @@
       <w>será</w>
       <w>seus</w>
       <w>smtp</w>
+      <w>sobre</w>
+      <w>sobrenome</w>
       <w>somente</w>
       <w>starttls</w>
       <w>sucesso</w>
+      <w>também</w>
       <w>telefone</w>
       <w>telefones</w>
+      <w>tipo</w>
       <w>todas</w>
       <w>transferência</w>
       <w>trata</w>

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/v1/recovery", produces = "application/json")
+@RequestMapping(value = "/recovery", produces = "application/json")
 @Api(produces = APPLICATION_JSON_VALUE, description = "Responsável pela recuperação da senha do usuário.", tags = {"Recovery"})
 public class RecoveryController {
 

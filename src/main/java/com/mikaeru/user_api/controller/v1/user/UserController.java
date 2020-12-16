@@ -80,7 +80,7 @@ public class UserController {
     }
 
     /**
-     * Método que retorna os dados dos usuários paginados e ordenados pelo FISTNAME.
+     * Método que retorna os dados dos usuários paginados e ordenados pelo FIRSTNAME.
      *
      * @param page Número da página
      * @return <code>{@link ResponseEntity}</code> object
